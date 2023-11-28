@@ -18,10 +18,10 @@ sudo apt install make
 
 ## Getting Started
 
-1. Clone the repository: `git clone https://github.com/your-username/your-project.git`
-2. Change to the project directory: `cd your-project`
+1. Clone the repository: `git clone https://github.com/Mateo-Sanchez14/Socket-Chat.git`
+2. Change to the project directory: `cd Socket-Chat`
 3. Compile the project: `make`
-4. Run the project: `./your-project`
+4. Run the project: `./Socket-Chat`
 
 ## Usage
 
@@ -37,8 +37,16 @@ Specify the license under which your project is distributed.
 
 ## Acknowledgements
 
-Give credit to any external libraries, resources, or individuals that you used or referenced in your project.
+Thanks to the following people who contributed to this project:
+
+- Mateo Sanchez
+- Alejandro Grellet Martinoya
+- Gianpaolo Berarducci
+- Tomas Alderete
+
+And very special thanks to our teacher, Mag. Ing. Carlos Albaca Paravan.
 
 ## Contact
 
-Provide contact information for users to reach out to you with questions or feedback.
+Feel free to contact me at my email:
+mateo-sanchez@hotmail.com

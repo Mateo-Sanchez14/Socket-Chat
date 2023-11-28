@@ -1,9 +1,7 @@
-#/* Copyright 2021, Cátedra de Informática y Programación I
-# * Departamento de Electricidad, Electrónica y Computación
-# * Facultad de Ciencias Exactas y Tecnología 
+# /* Copyright 2023,
+#  * Facultad de Ciencias Exactas y Tecnología
 #  * Universidad Nacional de Tucuman
-#  * Copyright 2021, Mariana Sánchez <msanchez@herrera.unt.edu.ar>, Enzo A. Sémola <esemola@herrera.unt.edu.ar>
-#  * All rights reserved.
+#  * Copyright 2023, Mateo Sanchez <mateo-sanchez@hotmail.com>
 #  *
 #  * Redistribution and use in source and binary forms, with or without
 #  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +29,6 @@
 #  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 #  * POSSIBILITY OF SUCH DAMAGE.
 #  */
-
 # This part of the makefile is used to detect your OS. Depending on the OS
 DS1 ?= /
 
