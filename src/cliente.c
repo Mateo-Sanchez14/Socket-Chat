@@ -90,6 +90,8 @@ void client() {
     char ip[16];
     char message[200];
     char buffer[200];
+    struct sockaddr_in sourceAddress;
+    socklen_t addressLength = sizeof(sourceAddress);
 
     printf("Bienvenido a la aplicacion de mensajeria como cliente\n");
 
@@ -115,10 +117,14 @@ void client() {
 
     while (1) {
         // Receive the message from the server
-        if (recv(clientSocket, buffer, sizeof(buffer), 0) < 0) {
+        if (recvfrom(clientSocket, buffer, sizeof(buffer), 0, (struct sockaddr *)&sourceAddress, &addressLength) < 0) {
             perror("Error al recibir el mensaje del servidor");
             exit(EXIT_FAILURE);
         }
+        // Get the source IP address
+        char sourceIP[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &(sourceAddress.sin_addr), sourceIP, INET_ADDRSTRLEN);
+
         printf("El mensaje recibido es: %s\n", buffer);
 
         // Show the date and time of the client
@@ -128,8 +134,8 @@ void client() {
                tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 
         // Show the ip and port from where the message came
-        printf("La ip y el puerto desde donde llego el mensaje es: %s:%d\n", ip, port);
-        bzero(&ip, sizeof(ip));
+        printf("La ip y el puerto desde donde llego el mensaje es: %s:%d\n", sourceIP, ntohs(sourceAddress.sin_port));
+        bzero(&sourceIP, sizeof(sourceIP));
     }
 }
 

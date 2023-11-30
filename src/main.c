@@ -80,7 +80,7 @@ void mensajeBienvenida();
 
 int main(int argc, char const *argv[]) {
     // First we need to chose if we are going to be a server or a client
-    int option = 0;
+    char option[2];
     int port = 0;
     char ip[16];
     char message[200];
@@ -92,12 +92,21 @@ int main(int argc, char const *argv[]) {
     printf("1. Servidor\n");
     printf("2. Cliente\n");
     scanf("%d", &option);
-    while (option != 1 && option != 2) {
-        printf("Opcion invalida, por favor ingrese una opcion valida\n");
-        scanf("%d", &option);
+
+    while (1) {
+        fgets(option, sizeof(option), stdin);
+        fgetc(stdin);
+        option[strcspn(option, "\n")] = '\0';
+
+        if (strlen(option) == 1 && (option[0] == '1' || option[0] == '2')) {
+            break;
+        } else {
+            printf("Opcion invalida, por favor ingrese una opcion valida\n");
+        }
     }
+
     limpiarPantalla();
-    if (option == 1) {
+    if (option[0] == '1') {
         servidor();
     } else {
         client();

@@ -21,7 +21,7 @@ sudo apt install make
 1. Clone the repository: `git clone https://github.com/Mateo-Sanchez14/Socket-Chat.git`
 2. Change to the project directory: `cd Socket-Chat`
 3. Compile the project: `make`
-4. Run the project: `./Socket-Chat`
+4. Run the project: `./build/app.out`
 
 ## Usage
 

@@ -85,71 +85,154 @@ utilizadas, mostrando mensajes informativos en caso de falla.
 /*Aquí se escriben la implementación de las funciones */
 
 void servidor() {
-    int serverSocket = 0;
-    int clientSocket = 0;
-    int clientLength = 0;
-    int messageLength = 0;
-    int messageSent = 0;
-    int messageReceived = 0;
-    char message[200];
-    char buffer[200];
-    struct sockaddr_in serverAddress;
-    struct sockaddr_in clientAddress;
+    int serverSocket = createSocket();
+    int port = getRandomPort();
+    struct sockaddr_in serverAddress = createServerAddress(port);
+    struct sockaddr_in clientAddress = createClientAddress();
+    setBroadcastOption(serverSocket);
+    bindSocket(serverSocket, serverAddress);
 
-    // We need to create the socket
-    serverSocket = socket(AF_INET, SOCK_DGRAM, 0);
+    while (1) {
+        char message[200];
+        getMessageFromConsole(message);
+        sendMessageToSubnet(serverSocket, message, clientAddress);
+        printSuccessMessage();
+    }
+}
+
+/**
+ * Creates a socket for the server.
+ *
+ * @return The server socket.
+ */
+int createSocket() {
+    int serverSocket = socket(AF_INET, SOCK_DGRAM, 0);
     if (serverSocket < 0) {
         perror("Error al crear el socket");
         exit(1);
     }
+    return serverSocket;
+}
 
-    // Asignate a random value between 50000 and 65000 to the port variable
+/**
+ * Generates a random port number between 50000 and 64999.
+ *
+ * @return The randomly generated port number.
+ */
+int getRandomPort() {
     srand(time(NULL));
-    int port = rand() % 15000 + 50000;
+    return rand() % 15000 + 50000;
+}
 
-    // We need to set the server address
-    serverAddress.sin_family = AF_INET;         // IPv4
-    serverAddress.sin_addr.s_addr = INADDR_ANY; // Any address
-    serverAddress.sin_port = htons(port);       // Port
-    bzero(&(serverAddress.sin_zero), 8);        // Zero the rest of the struct
+/**
+ * Creates a server address structure with the specified port.
+ *
+ * @param port The port number for the server address.
+ * @return The created server address structure.
+ */
+struct sockaddr_in createServerAddress(int port) {
+    struct sockaddr_in serverAddress;
+    serverAddress.sin_family = AF_INET;
+    serverAddress.sin_addr.s_addr = INADDR_ANY;
+    serverAddress.sin_port = htons(port);
+    bzero(&(serverAddress.sin_zero), 8);
+    return serverAddress;
+}
 
-    // We need to bind the socket
-    if (bind(serverSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) < 0) {
-        perror("Error al bindear el socket");
-        exit(1);
-    }
+/**
+ * Creates a client address structure.
+ *
+ * @return The created client address structure.
+ */
+struct sockaddr_in createClientAddress() {
+    struct sockaddr_in clientAddress;
+    clientAddress.sin_family = AF_INET;
+    clientAddress.sin_addr.s_addr = INADDR_BROADCAST;
+    clientAddress.sin_port = htons(2500);
+    bzero(&(clientAddress.sin_zero), 8);
+    return clientAddress;
+}
 
-    // Set the client parameters
-    clientAddress.sin_family = AF_INET;               // IPv4
-    clientAddress.sin_addr.s_addr = INADDR_BROADCAST; // Broadcast address
-    clientAddress.sin_port = htons(2500);             // Registered port
-    bzero(&(clientAddress.sin_zero), 8);              // Zero the rest of the struct
-
-    // We need to set the socket to broadcast
+/**
+ * Sets the broadcast option for a given server socket.
+ * This allows the server socket to send broadcast messages.
+ *
+ * @param serverSocket The server socket to set the broadcast option for.
+ */
+void setBroadcastOption(int serverSocket) {
     int broadcastPermission = 1;
     if (setsockopt(serverSocket, SOL_SOCKET, SO_BROADCAST, (void *)&broadcastPermission, sizeof(broadcastPermission)) < 0) {
         perror("Error al setear el socket para broadcast");
         exit(1);
     }
+}
 
-    // We do a loop to send the message to all the hosts in the subnet
-    while (1) {
-        // Read from console the message to send cleaning the buffer
-        printf("Ingrese el mensaje que desea enviar\n");
-        fgets(message, sizeof(message), stdin);
-        message[strlen(message) - 1] = '\0';
-        messageLength = strlen(message);
-
-        // Send the message
-        messageSent = sendto(serverSocket, message, messageLength, MSG_CONFIRM, (struct sockaddr *)&clientAddress, sizeof(clientAddress));
-        if (messageSent < 0) {
-            perror("Error al enviar el mensaje");
-            exit(1);
-        }
-
-        // Success message
-        printf("Mensaje enviado con exito por el mejor servidor boquense\n");
+/**
+ * Binds the server socket to the specified server address.
+ *
+ * @param serverSocket The server socket to bind.
+ * @param serverAddress The server address to bind the socket to.
+ */
+void bindSocket(int serverSocket, struct sockaddr_in serverAddress) {
+    if (bind(serverSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) < 0) {
+        perror("Error al bindear el socket");
+        exit(1);
     }
+}
+
+/**
+ * Function to get a message from the console.
+ *
+ * @param message The buffer to store the message.
+ */
+void getMessageFromConsole(char *message) {
+    printf("Ingrese el mensaje que desea enviar\n");
+    fgets(message, 200, stdin);
+    message[strlen(message) - 1] = '\0';
+}
+
+/**
+ * Sends a message to a client in the subnet.
+ *
+ * @param serverSocket The server socket.
+ * @param message The message to send.
+ * @param clientAddress The client's address.
+ */
+void sendMessageToSubnet(int serverSocket, const char *message, struct sockaddr_in clientAddress) {
+    int messageLength = strlen(message);
+    int messageSent = sendto(serverSocket, message, messageLength, MSG_CONFIRM, (struct sockaddr *)&clientAddress, sizeof(clientAddress));
+    if (messageSent < 0) {
+        perror("Error al enviar el mensaje");
+        exit(1);
+    }
+}
+
+char *codeSnippetSuccess = "    .___  ___.  _______ .__   __.      _______.     ___            __   _______     _______ .__   __. ____    ____  __       ___       _______   ______\n"
+                           "    |   \\/   | |   ____||  \\ |  |     /       |    /   \\          |  | |   ____|   |   ____||  \\ |  | \\   \\  /   / |  |     /   \\     |       \\ /  __  \\\n"
+                           "    |  \\  /  | |  |__   |   \\|  |    |   (----`   /  ^  \\         |  | |  |__      |  |__   |   \\|  |  \\   \\/   /  |  |    /  ^  \\    |  .--.  |  |  |  |\n"
+                           "    |  |\\/|  | |   __|  |  . `  |     \\   \\      /  /_\\  \\  .--.  |  | |   __|     |   __|  |  . `  |   \\      /   |  |   /  /_\\  \\   |  |  |  |  |  |  |\n"
+                           "    |  |  |  | |  |____ |  |\\   | .----)   |    /  _____  \\ |  `--'  | |  |____    |  |____ |  |\\   |    \\    /    |  |  /  _____  \\  |  '--'  |  `--'  |\n"
+                           "    |__|  |__| |_______||__| \\__| |_______/    /__/     \\__\\ \\______/  |_______|   |_______||__| \\__|     \\__/     |__| /__/     \\__\\ |_______/ \\______/\n"
+                           "\n"
+                           "      ______   ______   .__   __.     __________   ___  __  .___________.  ______\n"
+                           "     /      | /  __  \\  |  \\ |  |    |   ____\\  \\ /  / |  | |           | /  __  \\\n"
+                           "    |  ,----'|  |  |  | |   \\|  |    |  |__   \\  V  /  |  | `---|  |----`|  |  |  |\n"
+                           "    |  |     |  |  |  | |  . `  |    |   __|   >   <   |  |     |  |     |  |  |  |\n"
+                           "    |  `----.|  `--'  | |  |\\   |    |  |____ /  .  \\  |  |     |  |     |  `--'  |\n"
+                           "     \\______| \\______/  |__| \\__|    |_______/__/ \\__\\ |__|     |__|      \\______/\n"
+                           "\n"
+                           "    .______     ______     ______      __    __   _______ .__   __.      _______. _______  __\n"
+                           "    |   _  \\   /  __  \\   /  __  \\    |  |  |  | |   ____||  \\ |  |     /       ||   ____||  |\n"
+                           "    |  |_)  | |  |  |  | |  |  |  |   |  |  |  | |  |__   |   \\|  |    |   (----`|  |__   |  |\n"
+                           "    |   _  <  |  |  |  | |  |  |  |   |  |  |  | |   __|  |  . `  |     \\   \\    |   __|  |  |\n"
+                           "    |  |_)  | |  `--'  | |  `--'  '--.|  `--'  | |  |____ |  |\\   | .----)   |   |  |____ |__|\n"
+                           "    |______/   \\______/   \\_____\\_____\\______/  |_______||__| \\__| |_______/    |_______|(__)\n";
+
+/**
+ * Prints a success message to the console.
+ */
+void printSuccessMessage() {
+    printf("%s\n", codeSnippetSuccess);
 }
 
 /* === Definiciones de funciones externas ====================================================== */
