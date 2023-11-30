@@ -188,7 +188,7 @@ void bindSocket(int serverSocket, struct sockaddr_in serverAddress) {
 void getMessageFromConsole(char *message) {
     char deleted, flag = 0;
     printf("Ingrese el mensaje que desea enviar\n");
-    fgets(message, 203, stdin);
+    fgets(message, 204, stdin);
     message[strlen(message) - 1] = '\0';
     while ((deleted = getchar()) != '\n') {
         if (flag == 0) {

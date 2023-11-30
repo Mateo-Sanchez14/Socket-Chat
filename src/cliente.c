@@ -88,7 +88,7 @@ void client() {
     int clientSocket = 0;
     int port = 0;
     char ip[16];
-    char buffer[201]; // 200 characters + 1 for the null terminator
+    char buffer[300]; // 200 characters + 1 for the null terminator
     struct sockaddr_in sourceAddress;
     socklen_t addressLength = sizeof(sourceAddress);
 
