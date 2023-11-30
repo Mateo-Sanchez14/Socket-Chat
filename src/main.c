@@ -81,16 +81,13 @@ void mensajeBienvenida();
 int main(int argc, char const *argv[]) {
     // First we need to chose if we are going to be a server or a client
     char option[2];
-    int port = 0;
-    char ip[16];
-    char message[200];
-    char buffer[200];
 
     printf("Bienvenido a la aplicacion de mensajeria\n");
     mensajeBienvenida();
     printf("Por favor, ingrese la opcion que desea realizar\n");
     printf("1. Servidor\n");
     printf("2. Cliente\n");
+    // Clean the buffer
 
     while (1) {
         fgets(option, sizeof(option), stdin);
