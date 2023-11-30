@@ -97,7 +97,7 @@ void servidor() {
     struct sockaddr_in clientAddress;
 
     // We need to create the socket
-    serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+    serverSocket = socket(AF_INET, SOCK_DGRAM, 0);
     if (serverSocket < 0) {
         perror("Error al crear el socket");
         exit(1);
