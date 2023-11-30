@@ -31,19 +31,12 @@
  */
 
 /* === Inclusiones de cabeceras ================================================================ */
-/* Agregar aquí los .h necesarios
-Por ejemplo
-#include "funciones.h"
-#include "persona.h"
-*/
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-
 #include <stdlib.h>
+#include <servidor.h>
+#include <cliente.h>
 
 /* === Definicion y Macros ===================================================================== */
 #ifdef _WIN32
@@ -104,29 +97,25 @@ int main(int argc, char const *argv[]) {
     }
 
     if (option == 1) {
-        printf("Usted eligio la opcion servidor\n");
-        printf("Por favor, ingrese el mensaje que desea enviar\n");
-        scanf("%s", message);
-        printf("El mensaje que desea enviar es: %s\n", message);
-        sendMessage(message);
+        servidor();
     } else {
-        printf("Usted eligio la opcion cliente\n");
-        printf("Por favor, ingrese el puerto que desea utilizar\n");
-        scanf("%d", &port);
-        while (port < 50000 || port > 65000) {
-            printf("Puerto invalido, por favor ingrese un puerto valido\n");
-            scanf("%d", &port);
-        }
-        printf("Por favor, ingrese la ip a la que desea enviar el mensaje\n");
-        scanf("%s", ip);
-        printf("La ip a la que desea enviar el mensaje es: %s\n", ip);
-        printf("Por favor, ingrese el puerto al que desea enviar el mensaje\n");
-        scanf("%d", &port);
-        while (port < 50000 || port > 65000) {
-            printf("Puerto invalido, por favor ingrese un puerto valido\n");
-            scanf("%d", &port);
-        }
-        printf("El puerto al que desea enviar el mensaje es: %d\n", port);
+        // printf("Usted eligio la opcion cliente\n");
+        // printf("Por favor, ingrese el puerto que desea utilizar\n");
+        // scanf("%d", &port);
+        // while (port < 50000 || port > 65000) {
+        //     printf("Puerto invalido, por favor ingrese un puerto valido\n");
+        //     scanf("%d", &port);
+        // }
+        // printf("Por favor, ingrese la ip a la que desea enviar el mensaje\n");
+        // scanf("%s", ip);
+        // printf("La ip a la que desea enviar el mensaje es: %s\n", ip);
+        // printf("Por favor, ingrese el puerto al que desea enviar el mensaje\n");
+        // scanf("%d", &port);
+        // while (port < 50000 || port > 65000) {
+        //     printf("Puerto invalido, por favor ingrese un puerto valido\n");
+        //     scanf("%d", &port);
+        // }
+        // printf("El puerto al que desea enviar el mensaje es: %d\n", port);
         // Aqui se recibe el mensaje
     }
 
@@ -134,40 +123,6 @@ int main(int argc, char const *argv[]) {
 }
 
 /*Aquí se escriben la implementación de las funciones */
-
-void sendMessage(char *message) {
-    // This function will send the message to all the hosts in the subnet
-    // First we need to get the subnet
-    char subnet[16] = "192.168.1.0";
-    char ip[16];
-    int sockfd;
-    struct sockaddr_in servaddr;
-
-    // Creating socket file descriptor
-    if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
-        perror("socket creation failed");
-        exit(EXIT_FAILURE);
-    }
-
-    memset(&servaddr, 0, sizeof(servaddr));
-
-    // Filling server information
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(8080);
-
-    // Iterate over all possible hosts in the subnet
-    for (int i = 1; i <= 254; i++) {
-        sprintf(ip, "%s.%d", subnet, i);
-        servaddr.sin_addr.s_addr = inet_addr(ip);
-
-        // Send the message
-        sendto(sockfd, (const char *)message, strlen(message),
-               MSG_CONFIRM, (const struct sockaddr *)&servaddr,
-               sizeof(servaddr));
-    }
-
-    close(sockfd);
-}
 
 /* === Definiciones de funciones externas ====================================================== */
 
