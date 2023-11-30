@@ -84,7 +84,7 @@ utilizadas, mostrando mensajes informativos en caso de falla.
 
 /*Aquí se escriben la implementación de las funciones */
 
-void server() {
+void servidor() {
     int serverSocket = 0;
     int clientSocket = 0;
     int clientLength = 0;
