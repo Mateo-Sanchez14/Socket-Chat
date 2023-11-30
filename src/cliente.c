@@ -94,16 +94,21 @@ void client() {
     printf("Bienvenido a la aplicacion de mensajeria como cliente\n");
 
     // We need to create the client socket to listen to the server
-    clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+    clientSocket = socket(AF_INET, SOCK_DGRAM, 0);
     if (clientSocket < 0) {
         perror("Error al crear el socket del cliente");
         exit(EXIT_FAILURE);
     }
-    bzero(&clientSocket, sizeof(clientSocket));
+
+    // We need to set the client address
+    struct sockaddr_in clientAddress;
+    clientAddress.sin_family = AF_INET;
+    clientAddress.sin_addr.s_addr = INADDR_ANY;
+    clientAddress.sin_port = htons(2500);
+    bzero(&(clientAddress.sin_zero), 8);
 
     // bind the socket to the port
-    port = 2500;
-    if (bind(clientSocket, (struct sockaddr *)&clientSocket, sizeof(clientSocket)) < 0) {
+    if (bind(clientSocket, (struct sockaddr *)&clientAddress, sizeof(clientAddress)) < 0) {
         perror("Error al bindear el socket del cliente");
         exit(EXIT_FAILURE);
     }

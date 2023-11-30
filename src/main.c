@@ -95,28 +95,11 @@ int main(int argc, char const *argv[]) {
         printf("Opcion invalida, por favor ingrese una opcion valida\n");
         scanf("%d", &option);
     }
-
+    limpiarPantalla();
     if (option == 1) {
         servidor();
     } else {
-        // printf("Usted eligio la opcion cliente\n");
-        // printf("Por favor, ingrese el puerto que desea utilizar\n");
-        // scanf("%d", &port);
-        // while (port < 50000 || port > 65000) {
-        //     printf("Puerto invalido, por favor ingrese un puerto valido\n");
-        //     scanf("%d", &port);
-        // }
-        // printf("Por favor, ingrese la ip a la que desea enviar el mensaje\n");
-        // scanf("%s", ip);
-        // printf("La ip a la que desea enviar el mensaje es: %s\n", ip);
-        // printf("Por favor, ingrese el puerto al que desea enviar el mensaje\n");
-        // scanf("%d", &port);
-        // while (port < 50000 || port > 65000) {
-        //     printf("Puerto invalido, por favor ingrese un puerto valido\n");
-        //     scanf("%d", &port);
-        // }
-        // printf("El puerto al que desea enviar el mensaje es: %d\n", port);
-        // Aqui se recibe el mensaje
+        client();
     }
 
     return 0;

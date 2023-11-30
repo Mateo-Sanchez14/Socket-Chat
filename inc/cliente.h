@@ -1,5 +1,5 @@
-#ifndef SERVIDOR_H
-#define SERVIDOR_H
+#ifndef CLIENTE_H
+#define CLIENTE_H
 
 // Include any necessary headers
 
@@ -10,6 +10,6 @@
  * @param None
  * @return None
  */
-void cliente();
+void client();
 
-#endif // SERVIDOR_H
+#endif // CLIENTE_H
