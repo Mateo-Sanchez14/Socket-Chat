@@ -75,7 +75,7 @@ utilizadas, mostrando mensajes informativos en caso de falla.
 /* === Definiciones de variables internas ====================================================== */
 
 /* === Declaraciones de funciones internas ==================================================== */
-
+void mensajeBienvenida();
 /* === Definiciones de funciones internas ====================================================== */
 
 int main(int argc, char const *argv[]) {
@@ -87,6 +87,7 @@ int main(int argc, char const *argv[]) {
     char buffer[200];
 
     printf("Bienvenido a la aplicacion de mensajeria\n");
+    mensajeBienvenida();
     printf("Por favor, ingrese la opcion que desea realizar\n");
     printf("1. Servidor\n");
     printf("2. Cliente\n");
@@ -106,6 +107,27 @@ int main(int argc, char const *argv[]) {
 }
 
 /*Aquí se escriben la implementación de las funciones */
+const char *codeSnippet = "    _________  ________  ________                           ___  ________\n"
+                          "   |\\___   ___\\\\   ____\\|\\   __  \\                         |\\  \\|\\   __  \\\n"
+                          "   \\|___ \\  \\_\\ \\  \\___|\\ \\  \\|\\  \\      ____________      \\ \\  \\ \\  \\|\\  \\\n"
+                          "        \\ \\  \\ \\ \\  \\    \\ \\   ____\\    |\\____________\\     \\ \\  \\ \\   ____\\\n"
+                          "         \\ \\  \\ \\ \\  \\____\\ \\  \\___|    \\|____________|      \\ \\  \\ \\  \\___|\n"
+                          "          \\ \\__\\ \\ \\_______\\ \\__\\                             \\ \\__\\ \\__\\\n"
+                          "           \\|__|  \\|_______|\\|__|                              \\|__|\\|__|\n"
+                          "\n"
+                          "\n"
+                          "\n"
+                          "    ________  ________  ___  ___  ________  ________           _____\n"
+                          "   |\\   ____\\|\\   __  \\|\\  \\|\\  \\|\\   __  \\|\\   __  \\         / __  \\\n"
+                          "   \\ \\  \\___|\\ \\  \\|\\  \\ \\  \\\\\\  \\ \\  \\|\\  \\ \\  \\|\\  \\       |\\/_|\\  \\\n"
+                          "    \\ \\  \\  __\\ \\   _  _\\ \\  \\\\\\  \\ \\   ____\\ \\  \\\\\\  \\      \\|/ \\ \\  \\\n"
+                          "     \\ \\  \\|\\  \\ \\  \\\\  \\\\ \\  \\\\\\  \\ \\  \\___|\\ \\  \\\\\\  \\          \\ \\  \\\n"
+                          "      \\ \\_______\\ \\__\\\\ _\\\\ \\_______\\ \\__\\    \\ \\_______\\          \\ \\__\\\n"
+                          "       \\|_______|\\|__|\\|__|\\|_______|\\|__|     \\|_______|           \\|__|\n";
+
+void mensajeBienvenida() {
+    printf("%s\n", codeSnippet);
+}
 
 /* === Definiciones de funciones externas ====================================================== */
 

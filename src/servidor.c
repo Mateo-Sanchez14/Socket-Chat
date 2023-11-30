@@ -136,9 +136,8 @@ void servidor() {
     while (1) {
         // Read from console the message to send cleaning the buffer
         printf("Ingrese el mensaje que desea enviar\n");
-        scanf("%s", message);
-        while ((getchar()) != '\n')
-            ;
+        fgets(message, sizeof(message), stdin);
+        message[strlen(message) - 1] = '\0';
         messageLength = strlen(message);
 
         // Send the message
