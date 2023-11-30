@@ -91,7 +91,6 @@ int main(int argc, char const *argv[]) {
     printf("Por favor, ingrese la opcion que desea realizar\n");
     printf("1. Servidor\n");
     printf("2. Cliente\n");
-    scanf("%d", &option);
 
     while (1) {
         fgets(option, sizeof(option), stdin);
