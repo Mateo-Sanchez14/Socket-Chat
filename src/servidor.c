@@ -93,7 +93,7 @@ void servidor() {
     bindSocket(serverSocket, serverAddress);
 
     while (1) {
-        char message[500];
+        char message[201];
         getMessageFromConsole(message);
         sendMessageToSubnet(serverSocket, message, clientAddress);
         printSuccessMessage();
@@ -188,15 +188,18 @@ void bindSocket(int serverSocket, struct sockaddr_in serverAddress) {
 void getMessageFromConsole(char *message) {
     char deleted, flag = 0;
     printf("Ingrese el mensaje que desea enviar\n");
-    fgets(message, 204, stdin);
-    message[strlen(message) - 1] = '\0';
-    while ((deleted = getchar()) != '\n') {
-        if (flag == 0) {
-            printf("El mensaje ingresado es demasiado largo, se borraron los siguientes caracteres: \n");
-            flag = 1;
-        }
-        {
-            printf("%c", deleted);
+
+    if (fgets(message, 201, stdin) != NULL) {
+        // Eliminamos el salto de línea si está presente
+        size_t len = strlen(message);
+        if (len > 0 && message[len - 1] == '\n') {
+            message[len - 1] = '\0'; // Eliminamos el salto de línea
+            len = strlen(message);
+        } else {
+            // Limpiamos el buffer de entrada en caso de que la entrada sea demasiado larga
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
         }
     }
 }
@@ -210,7 +213,7 @@ void getMessageFromConsole(char *message) {
  */
 void sendMessageToSubnet(int serverSocket, const char *message, struct sockaddr_in clientAddress) {
     int messageLength = strlen(message);
-    int messageSent = sendto(serverSocket, message, messageLength - 1, MSG_CONFIRM, (struct sockaddr *)&clientAddress, sizeof(clientAddress));
+    int messageSent = sendto(serverSocket, message, messageLength + 1, MSG_CONFIRM, (struct sockaddr *)&clientAddress, sizeof(clientAddress));
     if (messageSent < 0) {
         perror("Error al enviar el mensaje");
         exit(1);
